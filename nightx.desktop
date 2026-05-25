@@ -1,0 +1,48 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=NightX
+GenericName=Web Penetration Testing
+Comment=Professional Web Penetration Testing Framework v1.0.0
+Exec=bash -c '/opt/nightx/venv/bin/python3 /opt/nightx/main.py --help; exec bash'
+Icon=nightx
+Terminal=true
+StartupNotify=true
+Categories=Network;Security;System;
+Keywords=pentest;security;web;scanner;vulnerability;nightx;recon;hacking;
+Actions=FullScan;VulnScan;HeadersCheck;Fingerprint;SubdomainEnum;APITest;ListScans;
+
+[Desktop Action FullScan]
+Name=Full Penetration Scan
+Exec=bash -c 'clear; read -p "  NightX Target URL: " T; /opt/nightx/venv/bin/python3 /opt/nightx/main.py scan "$T" -v; read -p "  Done. Press Enter..."; exec bash'
+Terminal=true
+
+[Desktop Action VulnScan]
+Name=Vulnerability Scan
+Exec=bash -c 'clear; read -p "  NightX Target URL: " T; /opt/nightx/venv/bin/python3 /opt/nightx/main.py vuln "$T" -v; read -p "  Done. Press Enter..."; exec bash'
+Terminal=true
+
+[Desktop Action HeadersCheck]
+Name=Security Headers Check
+Exec=bash -c 'clear; read -p "  NightX Target URL: " T; /opt/nightx/venv/bin/python3 /opt/nightx/main.py headers "$T" -v; read -p "  Done. Press Enter..."; exec bash'
+Terminal=true
+
+[Desktop Action Fingerprint]
+Name=Web Fingerprinting
+Exec=bash -c 'clear; read -p "  NightX Target URL: " T; /opt/nightx/venv/bin/python3 /opt/nightx/main.py fingerprint "$T" -v; read -p "  Done. Press Enter..."; exec bash'
+Terminal=true
+
+[Desktop Action SubdomainEnum]
+Name=Subdomain Enumeration
+Exec=bash -c 'clear; read -p "  NightX Domain: " T; /opt/nightx/venv/bin/python3 /opt/nightx/main.py subdomains "$T" -v; read -p "  Done. Press Enter..."; exec bash'
+Terminal=true
+
+[Desktop Action APITest]
+Name=API Security Testing
+Exec=bash -c 'clear; read -p "  NightX Target URL: " T; /opt/nightx/venv/bin/python3 /opt/nightx/main.py api "$T" -v; read -p "  Done. Press Enter..."; exec bash'
+Terminal=true
+
+[Desktop Action ListScans]
+Name=View Scan History
+Exec=bash -c 'clear; /opt/nightx/venv/bin/python3 /opt/nightx/main.py list-scans; read -p "  Press Enter..."; exec bash'
+Terminal=true
