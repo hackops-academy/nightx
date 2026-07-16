@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NightX — Operate it like a professional</title>
+<meta name="description" content="A hands-on course for running the NightX web penetration testing framework like a professional.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-void:#0a0505;
+    --bg-panel:#150a0a;
+    --bg-panel-2:#1a0e0e;
+    --bg-card:#170c0c;
+    --border:#3a1f1f;
+    --border-soft:#241313;
+    --red-deep:#4a0808;
+    --red-mid:#991010;
+    --red-bright:#cc2020;
+    --red-glow:#ff5c5c;
+    --red-glow-2:#ff8a8a;
+    --text-primary:#f5e6e6;
+    --text-body:#cfa8a8;
+    --text-muted:#8a5f5f;
+    --amber:#febc2e;
+    --green:#28c840;
+    --mono:'JetBrains Mono', 'Courier New', monospace;
+    --sans:'IBM Plex Sans', -apple-system, sans-serif;
+    --sp-1:8px; --sp-2:16px; --sp-3:24px; --sp-4:32px; --sp-5:40px;
+    --sp-6:48px; --sp-7:64px; --sp-8:80px;
+    --content-w:760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-void);
+    color:var(--text-body);
+    font-family:var(--sans);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--red-glow-2);}
+  ::selection{background:var(--red-mid);color:#fff;}
+
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size:40px 40px;
+    opacity:.4;
+    mask-image:linear-gradient(to bottom, black, transparent 85%);
+  }
+
+  .ethics{
+    position:relative;z-index:2;
+    background:#1a0e0e;
+    border-bottom:1px solid var(--border);
+    color:var(--red-glow-2);
+    font-family:var(--mono);
+    font-size:13px;
+    padding:10px 24px;
+    text-align:center;
+  }
+  .ethics b{color:var(--red-glow);}
+  .ethics span{color:var(--text-primary);}
+
+  header.hero{
+    position:relative;z-index:1;
+    overflow:hidden;
+    padding:var(--sp-8) var(--sp-3) var(--sp-7);
+    border-bottom:1px solid var(--border);
+  }
+  .hero-inner{max-width:900px;margin:0 auto;position:relative;z-index:3;}
+  .term-chrome{
+    display:inline-flex;align-items:center;gap:var(--sp-1);
+    background:var(--bg-panel-2);border:1px solid var(--border);
+    border-radius:6px;padding:6px 14px 6px 10px;margin:0 0 var(--sp-4);
+    font-family:var(--mono);font-size:12px;color:var(--text-muted);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .dot.r{background:#ff5f57;} .dot.y{background:var(--amber);} .dot.g{background:var(--green);}
+  h1.wordmark{
+    font-family:'Arial Black', var(--mono);font-weight:900;
+    font-size:clamp(44px,8.5vw,92px);
+    letter-spacing:1px;
+    margin:0 0 var(--sp-3);
+    color:var(--red-glow);
+    text-shadow:0 0 40px rgba(255,92,92,.35);
+  }
+  .hero p.lede{
+    font-size:clamp(17px,2.2vw,21px);
+    color:var(--text-primary);
+    max-width:640px;
+    margin:0 0 var(--sp-5);
+  }
+  .hero p.lede em{color:var(--red-bright);font-style:normal;}
+  .cmd-line{
+    font-family:var(--mono);font-size:15px;
+    background:var(--bg-panel-2);border:1px solid var(--border);
+    border-radius:8px;padding:var(--sp-2) 20px;max-width:600px;
+    color:var(--red-glow-2);
+  }
+  .cmd-line .p{color:var(--red-bright);}
+  .cmd-line .c{color:var(--text-muted);}
+  .cursor{display:inline-block;width:8px;height:16px;background:var(--red-glow);vertical-align:middle;animation:blink 1.1s steps(1) infinite;margin-left:2px;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero-badges{display:flex;flex-wrap:wrap;gap:var(--sp-1) 10px;margin-top:var(--sp-5);}
+  .badge{
+    font-family:var(--mono);font-size:12.5px;color:var(--red-bright);
+    border:1px solid var(--border);background:var(--bg-panel-2);
+    padding:7px 12px;border-radius:20px;
+  }
+
+  .peaks{position:absolute;left:0;right:0;bottom:-2px;height:200px;z-index:1;opacity:.55;}
+
+  .layout{
+    position:relative;z-index:1;
+    display:grid;
+    grid-template-columns:280px minmax(0,1fr);
+    max-width:1280px;margin:0 auto;
+  }
+  nav.toc{
+    position:sticky;top:0;align-self:start;
+    height:100vh;overflow-y:auto;
+    padding:48px 20px 48px 24px;
+    border-right:1px solid var(--border);
+  }
+  nav.toc::-webkit-scrollbar{width:6px;}
+  nav.toc::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .toc-track{position:relative;padding-left:18px;}
+  .toc-crack{position:absolute;left:0;top:4px;bottom:4px;width:2px;background:var(--border-soft);}
+  .toc-crack::after{
+    content:"";position:absolute;left:0;top:0;width:100%;
+    height:var(--progress,0%);
+    background:linear-gradient(var(--red-glow), var(--red-bright));
+    box-shadow:0 0 8px var(--red-glow);
+    transition:height .15s linear;
+  }
+  .toc-item{
+    display:block;position:relative;
+    font-family:var(--mono);font-size:13px;
+    color:var(--text-muted);text-decoration:none;
+    padding:9px 0 9px 16px;
+    transition:color .15s;
+  }
+  .toc-item .n{color:var(--text-muted);margin-right:8px;}
+  .toc-item:hover{color:var(--red-glow-2);}
+  .toc-item.active{color:var(--red-glow);}
+  .toc-item.active .n{color:var(--red-glow);}
+  .toc-item::before{
+    content:"";position:absolute;left:-19px;top:18px;width:6px;height:6px;
+    border-radius:50%;background:var(--border);
+  }
+  .toc-item.active::before{background:var(--red-glow);box-shadow:0 0 8px var(--red-glow);}
+
+  main{padding:0 0 var(--sp-8);min-width:0;}
+  .module{
+    padding:var(--sp-7) clamp(24px,4vw,64px) var(--sp-7);
+    border-bottom:1px solid var(--border-soft);
+    scroll-margin-top:20px;
+  }
+  .module.m0{padding-top:var(--sp-6);}
+
+  .module > * { margin-top:var(--sp-3); }
+  .module > *:first-child { margin-top:0; }
+  .module > *:last-child { margin-bottom:0 !important; }
+
+  .module-eyebrow{
+    font-family:var(--mono);font-size:13px;color:var(--red-bright);
+    display:flex;align-items:center;gap:var(--sp-2);
+  }
+  .module-eyebrow .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border:1px solid var(--red-mid);border-radius:6px;
+    color:var(--red-glow);font-weight:700;
+  }
+  .module h2{
+    font-family:var(--mono);font-size:clamp(24px,3vw,34px);
+    color:var(--text-primary);margin-top:var(--sp-2) !important;letter-spacing:-.5px;
+  }
+  .module .goal{color:var(--text-muted);font-size:15px;max-width:var(--content-w);margin-top:var(--sp-1) !important;}
+  .module .goal + *{margin-top:var(--sp-5) !important;}
+  .module p{max-width:var(--content-w);font-size:15.5px;}
+  .module ul, .module ol{max-width:var(--content-w);padding-left:20px;font-size:15.5px;}
+  .module li{margin-bottom:var(--sp-1);}
+  .module h3{
+    font-family:var(--mono);font-size:16px;color:var(--red-glow-2);
+    margin-top:var(--sp-5) !important;
+  }
+  .module h3 + *{margin-top:var(--sp-2) !important;}
+
+  pre{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:8px;padding:var(--sp-2) 18px;overflow-x:auto;
+    font-family:var(--mono);font-size:13.5px;line-height:1.6;
+    color:var(--red-glow-2);max-width:var(--content-w);position:relative;
+  }
+  pre .cm{color:var(--text-muted);}
+  pre .kw{color:var(--red-bright);}
+  pre .str{color:#e0a95a;}
+  pre .fl{color:#7dc4e0;}
+  code.inline{
+    font-family:var(--mono);background:var(--bg-card);border:1px solid var(--border);
+    padding:2px 6px;border-radius:4px;font-size:13.5px;color:var(--red-glow-2);
+  }
+
+  .tip{
+    max-width:var(--content-w);padding:var(--sp-2) 18px;
+    border-left:3px solid var(--red-bright);
+    background:var(--bg-panel-2);border-radius:0 8px 8px 0;
+    font-size:14.5px;
+  }
+  .tip b{color:var(--red-glow);font-family:var(--mono);font-size:12.5px;letter-spacing:.5px;display:block;margin-bottom:var(--sp-1);}
+
+  .warn{
+    max-width:var(--content-w);padding:var(--sp-2) 18px;
+    border-left:3px solid #ff5f57;
+    background:#170a0a;border-radius:0 8px 8px 0;font-size:14.5px;
+  }
+  .warn b{color:#ff5f57;font-family:var(--mono);font-size:12.5px;letter-spacing:.5px;display:block;margin-bottom:var(--sp-1);}
+
+  table{border-collapse:collapse;max-width:var(--content-w);width:100%;font-size:13.5px;}
+  th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;}
+  th{background:var(--bg-panel-2);color:var(--red-glow-2);font-family:var(--mono);font-weight:600;font-size:12.5px;}
+  td{color:var(--text-body);}
+  td code.inline, th code.inline{font-size:12.5px;}
+
+  .sev{display:inline-block;padding:2px 9px;border-radius:20px;font-family:var(--mono);font-size:11px;font-weight:600;}
+  .sev.crit{background:rgba(255,95,87,.15);color:#ff5f57;border:1px solid rgba(255,95,87,.4);}
+  .sev.high{background:rgba(254,188,46,.15);color:var(--amber);border:1px solid rgba(254,188,46,.4);}
+  .sev.med{background:rgba(204,32,32,.15);color:var(--red-bright);border:1px solid rgba(204,32,32,.4);}
+  .sev.info{background:rgba(40,200,64,.15);color:var(--green);border:1px solid rgba(40,200,64,.4);}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1);max-width:var(--content-w);font-family:var(--mono);font-size:12.5px;}
+  .flow .box{background:var(--bg-card);border:1px solid var(--red-mid);color:var(--red-glow-2);padding:8px 12px;border-radius:6px;}
+  .flow .arrow{color:var(--text-muted);}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);max-width:var(--content-w);}
+  @media (max-width:640px){.grid-2{grid-template-columns:1fr;}}
+  .kv{background:var(--bg-panel-2);border:1px solid var(--border);border-radius:8px;padding:var(--sp-2);}
+  .kv .k{font-family:var(--mono);font-size:11.5px;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+  .kv .v{color:var(--text-primary);font-size:14px;}
+
+  footer{
+    position:relative;z-index:1;
+    border-top:1px solid var(--border);
+    padding:40px 24px;text-align:center;
+    font-family:var(--mono);font-size:12.5px;color:var(--text-muted);
+  }
+  footer a{color:var(--red-bright);}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    nav.toc{
+      position:sticky;top:0;height:auto;max-height:60px;overflow:hidden;
+      display:flex;overflow-x:auto;padding:12px 16px;
+      border-right:none;border-bottom:1px solid var(--border);
+      background:var(--bg-void);z-index:20;
+      transition:max-height .2s ease;
+    }
+    nav.toc.open{max-height:70vh;overflow-y:auto;flex-direction:column;}
+    .toc-track{padding-left:0;display:flex;gap:4px;flex-wrap:nowrap;}
+    nav.toc.open .toc-track{flex-direction:column;}
+    .toc-crack{display:none;}
+    .toc-item{white-space:nowrap;border:1px solid var(--border);border-radius:16px;padding:6px 12px;}
+    .toc-item::before{display:none;}
+    nav.toc.open .toc-item{white-space:normal;border-radius:6px;}
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<div class="ethics">
+  <b>AUTHORIZED TESTING ONLY —</b> <span>only run NightX against systems you own or have explicit written permission to test. Unauthorized use is illegal.</span>
+</div>
+
+<header class="hero">
+  <svg class="peaks" viewBox="0 0 1280 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,200 L0,150 L200,120 L400,145 L620,110 L840,150 L1060,120 L1280,150 L1280,200 Z" fill="#1a0e0e"/>
+    <path d="M0,200 L0,175 L260,160 L520,180 L780,155 L1040,178 L1280,160 L1280,200 Z" fill="#241313" opacity="0.8"/>
+  </svg>
+  <div class="hero-inner">
+    <div class="term-chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>&nbsp;root@kali: ~/nightx — professional-track</div>
+    <h1 class="wordmark">NIGHTX</h1>
+    <p class="lede">A hands-on course for running NightX the way <em>a working pentester</em> would — recon, headers, fingerprinting, vulnerability scanning, auth testing, and API testing, tied into one repeatable, reportable methodology.</p>
+    <div class="cmd-line"><span class="p">$</span> nightx scan https://target.com <span class="c">-v -t 20</span><span class="cursor"></span></div>
+    <div class="hero-badges">
+      <span class="badge">13 modules</span>
+      <span class="badge">all 6 scan modules covered</span>
+      <span class="badge">legal practice targets included</span>
+      <span class="badge">by HackOps Academy</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" id="toc">
+    <div class="toc-track">
+      <div class="toc-crack" id="crack"></div>
+      <a class="toc-item" data-target="m0"><span class="n">00</span>Welcome &amp; legal</a>
+      <a class="toc-item" data-target="m1"><span class="n">01</span>Installation &amp; setup</a>
+      <a class="toc-item" data-target="m2"><span class="n">02</span>Anatomy of a full scan</a>
+      <a class="toc-item" data-target="m3"><span class="n">03</span>Headers module</a>
+      <a class="toc-item" data-target="m4"><span class="n">04</span>Subdomain enumeration</a>
+      <a class="toc-item" data-target="m5"><span class="n">05</span>Fingerprinting</a>
+      <a class="toc-item" data-target="m6"><span class="n">06</span>Vulnerability scanning</a>
+      <a class="toc-item" data-target="m7"><span class="n">07</span>Auth testing</a>
+      <a class="toc-item" data-target="m8"><span class="n">08</span>API testing</a>
+      <a class="toc-item" data-target="m9"><span class="n">09</span>Flags &amp; tuning</a>
+      <a class="toc-item" data-target="m10"><span class="n">10</span>Reports &amp; history</a>
+      <a class="toc-item" data-target="m11"><span class="n">11</span>The full methodology</a>
+      <a class="toc-item" data-target="m12"><span class="n">12</span>Practice range &amp; next steps</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="module m0" id="m0">
+      <div class="module-eyebrow"><span class="num">00</span>WELCOME</div>
+      <h2>What this course is</h2>
+      <p class="goal">Get oriented before you run a single scan.</p>
+      <p>NightX is a professional web penetration testing framework — one CLI tying together recon, header analysis, subdomain enumeration, fingerprinting, vulnerability scanning, auth testing, API testing, and reporting. This course doesn't re-explain every flag — the README already does that. It teaches the <em style="color:var(--red-bright);font-style:normal">order</em> and <em style="color:var(--red-bright);font-style:normal">judgment</em> a professional applies so a scan produces a report you'd actually hand to a client.</p>
+      <div class="warn">
+        <b>AUTHORIZED TESTING ONLY</b>
+        NightX is for authorized security testing only. Only test systems you own or have explicit written permission to test — unauthorized use is illegal. Confirm scope, testing window, and out-of-scope systems in writing before Module 01.
+      </div>
+      <div class="tip"><b>WHO THIS IS FOR</b>Someone who has already run <code class="inline">sudo bash install.sh</code> and <code class="inline">nightx --help</code> at least once and wants a repeatable professional workflow instead of one-off commands.</div>
+    </section>
+
+    <section class="module" id="m1">
+      <div class="module-eyebrow"><span class="num">01</span>MODULE 01</div>
+      <h2>Installation &amp; setup</h2>
+      <p class="goal">One installer, then verify before you rely on it.</p>
+      <pre><span class="kw">git</span> clone https://github.com/hackops-academy/nightx.git
+<span class="kw">cd</span> nightx
+<span class="kw">sudo</span> bash install.sh   <span class="cm"># handles everything automatically</span></pre>
+      <p>NightX targets Kali Linux with Python 3.9+. Once installed, confirm the CLI is on your path and review the command list before your first real engagement:</p>
+      <pre><span class="kw">nightx</span> --help
+<span class="kw">nightx</span> list-scans</pre>
+      <div class="tip"><b>PRO HABIT</b>Run <code class="inline">nightx scan http://testphp.vulnweb.com --skip-subdomains -v</code> once right after install — a known, legal target confirms every module actually works before you point NightX at a client.</div>
+      <p>Uninstalling later is just as direct: <code class="inline">sudo bash /opt/nightx/uninstall.sh</code>.</p>
+    </section>
+
+    <section class="module" id="m2">
+      <div class="module-eyebrow"><span class="num">02</span>MODULE 02</div>
+      <h2>Anatomy of a full scan</h2>
+      <p class="goal">Know what <code class="inline">scan</code> actually runs before you run it unattended.</p>
+      <p><code class="inline">nightx scan</code> is the full pentest — all 6 modules in sequence. Everything else in the CLI (<code class="inline">headers</code>, <code class="inline">vuln</code>, <code class="inline">subdomains</code>, <code class="inline">fingerprint</code>, <code class="inline">api</code>) is that same module run in isolation, which is what you reach for once you already know which phase you care about.</p>
+      <div class="flow">
+        <span class="box">headers</span><span class="arrow">→</span><span class="box">subdomains</span><span class="arrow">→</span><span class="box">fingerprint</span><span class="arrow">→</span><span class="box">vuln</span><span class="arrow">→</span><span class="box">auth</span><span class="arrow">→</span><span class="box">api</span><span class="arrow">→</span><span class="box">report</span>
+      </div>
+      <pre><span class="kw">nightx</span> scan https://target.com
+<span class="kw">nightx</span> scan https://target.com -v -t 20</pre>
+      <div class="tip"><b>PRO HABIT</b>Run individual modules (Modules 03–08 below) against a new target before you ever hand it to the combined <code class="inline">scan</code> command unattended — you want to know each phase's normal output and normal runtime first.</div>
+    </section>
+
+    <section class="module" id="m3">
+      <div class="module-eyebrow"><span class="num">03</span>MODULE 03</div>
+      <h2>Headers module</h2>
+      <p class="goal">The fastest, lowest-risk signal you'll get all engagement.</p>
+      <p>Checks HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP, CORP, COEP, cookie flags, and information disclosure — then rolls it into a score out of 100.</p>
+      <pre><span class="kw">nightx</span> headers https://target.com</pre>
+      <div class="grid-2">
+        <div class="kv"><div class="k">Risk to target</div><div class="v">None — read-only HTTP checks</div></div>
+        <div class="kv"><div class="k">Best used</div><div class="v">First, before anything else</div></div>
+      </div>
+      <div class="tip"><b>PRO HABIT</b>Run headers standalone before a full scan and save the score separately — it's often the single number a client's non-technical stakeholders will actually remember from your report.</div>
+    </section>
+
+    <section class="module" id="m4">
+      <div class="module-eyebrow"><span class="num">04</span>MODULE 04</div>
+      <h2>Subdomain enumeration</h2>
+      <p class="goal">Map the real attack surface — most of it isn't the URL you were handed.</p>
+      <p>Combines DNS brute-force with crt.sh certificate-transparency log lookups, then resolves and live-checks every candidate host.</p>
+      <pre><span class="kw">nightx</span> subdomains target.com \
+  -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
+  -t 100 -o subs.txt</pre>
+      <ul>
+        <li>Bring your own wordlist with <code class="inline">-w</code> — SecLists is the standard choice for anything beyond the built-in list.</li>
+        <li>Raise <code class="inline">-t</code> (threads) for large wordlists, but watch for rate-limiting on the target's DNS or WAF.</li>
+        <li>Save results with <code class="inline">-o</code> so Module 06's vuln scan and Module 08's API scan can be pointed at the full discovered surface, not just the one host you started with.</li>
+      </ul>
+    </section>
+
+    <section class="module" id="m5">
+      <div class="module-eyebrow"><span class="num">05</span>MODULE 05</div>
+      <h2>Fingerprinting</h2>
+      <p class="goal">Know what you're actually attacking before you attack it.</p>
+      <p>Identifies CMS platforms (WordPress, Drupal, Joomla), WAF/CDN vendors (Cloudflare, Akamai, Imperva, ModSecurity), frontend/backend frameworks (React, Angular, Vue, Laravel, Django), and 40+ sensitive paths.</p>
+      <pre><span class="kw">nightx</span> fingerprint https://target.com</pre>
+      <div class="tip"><b>PRO HABIT</b>A detected WAF changes your plan for Module 06 — expect blind/time-based techniques to be noisier and slower to confirm, and budget extra time for false-positive triage rather than assuming a clean read.</div>
+    </section>
+
+    <section class="module" id="m6">
+      <div class="module-eyebrow"><span class="num">06</span>MODULE 06</div>
+      <h2>Vulnerability scanning</h2>
+      <p class="goal">Where real payloads start leaving your machine.</p>
+      <p>Tests for SQL injection, XSS, open redirect, SSRF, path traversal, command injection, CORS misconfiguration, and clickjacking.</p>
+      <pre><span class="kw">nightx</span> vuln https://target.com</pre>
+      <table>
+        <tr><th>Class</th><th>What it means for triage</th></tr>
+        <tr><td>SQL injection</td><td>Manually confirm before reporting — highest severity, highest false-positive cost</td></tr>
+        <tr><td>XSS</td><td>Check reflection context; not every reflection is exploitable</td></tr>
+        <tr><td>SSRF</td><td>Verify against an out-of-band listener where possible</td></tr>
+        <tr><td>CORS</td><td>Confirm the misconfiguration actually exposes authenticated data</td></tr>
+        <tr><td>Command injection</td><td>Treat any hit as critical until disproven</td></tr>
+      </table>
+      <div class="warn"><b>THIS PHASE IS ACTIVE</b>Unlike headers or fingerprinting, vuln scanning sends real exploit-style payloads. Confirm scope and timing windows before this module runs, the same way you would before running sqlmap or Burp's active scanner by hand.</div>
+    </section>
+
+    <section class="module" id="m7">
+      <div class="module-eyebrow"><span class="num">07</span>MODULE 07</div>
+      <h2>Auth testing</h2>
+      <p class="goal">Where a lot of real-world breaches actually start.</p>
+      <p>Checks for default credentials, JWT attacks, weak session-token entropy, and missing brute-force protection.</p>
+      <pre><span class="kw">nightx</span> scan https://target.com --skip-vuln --skip-api</pre>
+      <div class="tip"><b>PRO HABIT</b>Default-credential findings and weak brute-force protection are the fastest wins to explain to a non-technical client — lead your report's auth section with those before the more abstract JWT/entropy findings.</div>
+    </section>
+
+    <section class="module" id="m8">
+      <div class="module-eyebrow"><span class="num">08</span>MODULE 08</div>
+      <h2>API testing</h2>
+      <p class="goal">Modern apps leak more through their API than their pages.</p>
+      <p>Checks for exposed Swagger/OpenAPI docs, IDOR, GraphQL introspection left enabled, mass assignment, and broken authentication on API routes.</p>
+      <pre><span class="kw">nightx</span> api https://target.com</pre>
+      <div class="tip"><b>PRO HABIT</b>If fingerprinting (Module 05) flagged a frontend framework like React or Angular, always run this module — those apps almost always ship a JSON API behind the UI that the standard vuln scan alone won't fully exercise.</div>
+    </section>
+
+    <section class="module" id="m9">
+      <div class="module-eyebrow"><span class="num">09</span>MODULE 09</div>
+      <h2>Flags &amp; tuning</h2>
+      <p class="goal">The difference between a scan that finishes and one that doesn't.</p>
+      <table>
+        <tr><th>Flag</th><th>Short</th><th>Default</th><th>Use it when</th></tr>
+        <tr><td><code class="inline">--output</code></td><td><code class="inline">-o</code></td><td><code class="inline">./reports</code></td><td>Client wants reports in a specific folder</td></tr>
+        <tr><td><code class="inline">--threads</code></td><td><code class="inline">-t</code></td><td><code class="inline">10</code></td><td>Large scope and a target that can take the load</td></tr>
+        <tr><td><code class="inline">--wordlist</code></td><td><code class="inline">-w</code></td><td>built-in</td><td>You need SecLists-grade subdomain coverage</td></tr>
+        <tr><td><code class="inline">--format</code></td><td><code class="inline">-f</code></td><td><code class="inline">html</code></td><td>Client tooling needs <code class="inline">json</code> or plain <code class="inline">txt</code></td></tr>
+        <tr><td><code class="inline">--verbose</code></td><td><code class="inline">-v</code></td><td>off</td><td>First run against any new target</td></tr>
+        <tr><td><code class="inline">--skip-subdomains</code></td><td>—</td><td>off</td><td>Scope is one host, not a domain</td></tr>
+        <tr><td><code class="inline">--skip-vuln</code> / <code class="inline">--skip-auth</code> / <code class="inline">--skip-api</code></td><td>—</td><td>off</td><td>Recon-only pass, or re-running just one phase</td></tr>
+      </table>
+      <pre><span class="cm"># recon only, nothing active</span>
+<span class="kw">nightx</span> scan https://target.com --skip-vuln --skip-auth --skip-api
+
+<span class="cm"># faster subdomain-heavy run</span>
+<span class="kw">nightx</span> scan https://target.com --skip-subdomains -t 30</pre>
+    </section>
+
+    <section class="module" id="m10">
+      <div class="module-eyebrow"><span class="num">10</span>MODULE 10</div>
+      <h2>Reports &amp; history</h2>
+      <p class="goal">The deliverable is the point — treat report generation like part of the scan, not an afterthought.</p>
+      <pre><span class="kw">nightx</span> scan https://target.com -f json -o ~/reports
+<span class="kw">nightx</span> list-scans</pre>
+      <ul>
+        <li>Use <code class="inline">html</code> for a client-facing deliverable, <code class="inline">json</code> when you're piping results into your own tooling, and <code class="inline">txt</code> for a quick terminal-friendly diff between two runs.</li>
+        <li><code class="inline">list-scans</code> is your audit trail — check it before a follow-up engagement so you're not guessing what was covered last time.</li>
+      </ul>
+      <div class="tip"><b>PRO HABIT</b>Keep <code class="inline">-o</code> pointed at a per-client folder from the very first scan. Retroactively reorganizing reports after the engagement is where findings quietly go missing.</div>
+    </section>
+
+    <section class="module" id="m11">
+      <div class="module-eyebrow"><span class="num">11</span>MODULE 11</div>
+      <h2>The full methodology</h2>
+      <p class="goal">How the modules above chain into one engagement.</p>
+      <div class="flow" style="flex-direction:column;align-items:flex-start;">
+        <div class="box">1 — Confirm scope, testing window, out-of-scope systems in writing</div>
+        <div class="box">2 — Verify the install against a legal practice target</div>
+        <div class="box">3 — Run headers standalone — fast, zero-risk baseline</div>
+        <div class="box">4 — Enumerate subdomains with a real wordlist; save results</div>
+        <div class="box">5 — Fingerprint every live host discovered</div>
+        <div class="box">6 — Run vuln scanning with confirmed scope and timing</div>
+        <div class="box">7 — Run auth testing; lead findings with default creds</div>
+        <div class="box">8 — Run API testing on any host with a detected framework</div>
+        <div class="box">9 — Re-run the full <code class="inline" style="background:transparent;border:none;">scan</code> only once each phase's output looks sane on its own</div>
+        <div class="box">10 — Generate the client-facing report; archive with <code class="inline" style="background:transparent;border:none;">list-scans</code></div>
+      </div>
+      <div class="tip"><b>WHAT SEPARATES A PROFESSIONAL RUN FROM A DEFAULT RUN</b>Not the flags — the discipline of running phases individually first, verifying each one's output makes sense, and only then trusting the combined <code class="inline">scan</code> command unattended.</div>
+    </section>
+
+    <section class="module" id="m12">
+      <div class="module-eyebrow"><span class="num">12</span>MODULE 12</div>
+      <h2>Practice range &amp; next steps</h2>
+      <p class="goal">Rehearse the whole methodology somewhere nothing is at stake.</p>
+      <p><code class="inline">testphp.vulnweb.com</code> is a public, legal practice target maintained for exactly this kind of testing — use it to run the full methodology from Module 11 end to end before taking on real work.</p>
+      <pre><span class="kw">nightx</span> scan http://testphp.vulnweb.com --skip-subdomains -v</pre>
+      <ol>
+        <li>Run every module individually against the practice target, then the combined <code class="inline">scan</code>, and compare findings.</li>
+        <li>Generate all three report formats (<code class="inline">html</code>, <code class="inline">json</code>, <code class="inline">txt</code>) once so you know what each looks like before a client is waiting on it.</li>
+        <li>Time a full run. A professional's edge is knowing which phases are safe to parallelize and which need your full attention.</li>
+      </ol>
+      <div class="tip"><b>NEXT</b>Once the practice range feels routine, run the same methodology against your own authorized lab targets before taking on client engagements.</div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  NIGHTX — built by HackOps Academy · MIT License · <a href="https://github.com/hackops-academy/nightx">View on GitHub</a>
+</footer>
+
+<script>
+(function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll('.toc-item'));
+  var sections = items.map(function(i){ return document.getElementById(i.dataset.target); });
+  var crack = document.getElementById('crack');
+
+  items.forEach(function(item){
+    item.addEventListener('click', function(e){
+      e.preventDefault();
+      var target = document.getElementById(item.dataset.target);
+      if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      var toc = document.getElementById('toc');
+      toc.classList.remove('open');
+    });
+  });
+
+  function onScroll(){
+    var y = window.scrollY + 120;
+    var activeIdx = 0;
+    for(var i=0;i<sections.length;i++){
+      if(sections[i] && sections[i].offsetTop <= y){ activeIdx = i; }
+    }
+    items.forEach(function(it,idx){ it.classList.toggle('active', idx===activeIdx); });
+
+    var doc = document.documentElement;
+    var pct = (window.scrollY) / (doc.scrollHeight - window.innerHeight) * 100;
+    crack.style.setProperty('--progress', Math.min(100, Math.max(0,pct)) + '%');
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var toc = document.getElementById('toc');
+  if(window.matchMedia('(max-width:900px)').matches){
+    toc.addEventListener('click', function(e){
+      if(e.target === toc){ toc.classList.toggle('open'); }
+    });
+  }
+})();
+</script>
+</body>
+</html>
