@@ -8,6 +8,9 @@
  ██║ ╚████║██║╚██████╔╝██║  ██║   ██║   ██╔╝ ██╗
  ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
 ```
+<p align="center">
+  <img src="assets/nightx_banner.png" alt="Nightx, made by HackOps Academy" width="100%">
+</p>
 
 ### Professional Web Penetration Testing Framework
 
