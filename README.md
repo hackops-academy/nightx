@@ -140,6 +140,10 @@ nightx/
 
 ---
 
+## 📖 Learn more
+
+- **[Full course — hackops-academy.github.io/nightx](https://hackops-academy.github.io/nightx/)**
+
 ## 🗑️ Uninstall
 
 ```bash
