@@ -18,6 +18,10 @@
 
 ---
 
+<p align="center">
+  <img src="assets/nightx-logo.png" alt="Nightx, made by HackOps Academy" width="50%">
+</p>
+
 ## ⚙️ Installation
 
 ```bash
