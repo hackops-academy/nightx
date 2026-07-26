@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Deep immersive dark background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="50%" stop-color="#05070b" />
+      <stop offset="100%" stop-color="#020408" />
+    </linearGradient>
+
+    <!-- Electric Cyan Gradient -->
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
+    </linearGradient>
+
+    <!-- Crimson/Purple Pentest Alert Gradient -->
+    <linearGradient id="neonPinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff0844" />
+      <stop offset="100%" stop-color="#ffb199" />
+    </linearGradient>
+
+    <!-- Matrix / Terminal Green Gradient -->
+    <linearGradient id="matrixGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ff87" />
+      <stop offset="100%" stop-color="#60efff" />
+    </linearGradient>
+
+    <!-- Deep Shadow Filter -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <!-- Intense Neon Glow Filter -->
+    <filter id="cyberGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur1" />
+      <feGaussianBlur stdDeviation="16" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- App Icon Base: High-End Rounded Container -->
+  <rect x="0" y="0" width="512" height="512" rx="120" ry="120" fill="url(#bgGrad)" filter="url(#dropShadow)" />
+
+  <!-- Futuristic Cyber Border with Rounded Corners -->
+  <rect x="12" y="12" width="488" height="488" rx="112" ry="112" fill="none" stroke="url(#cyanGrad)" stroke-width="2" stroke-opacity="0.4" />
+  
+  <!-- Inner Circuit Grid Background Accents -->
+  <g stroke="#1e293b" stroke-width="1.5" stroke-opacity="0.5" fill="none">
+    <path d="M 60 120 L 140 120 L 180 160" />
+    <path d="M 452 120 L 372 120 L 332 160" />
+    <path d="M 60 392 L 140 392 L 180 352" />
+    <path d="M 452 392 L 372 392 L 332 352" />
+    <circle cx="60" cy="120" r="4" fill="#00f2fe" />
+    <circle cx="452" cy="120" r="4" fill="#ff0844" />
+    <circle cx="60" cy="392" r="4" fill="#00ff87" />
+    <circle cx="452" cy="392" r="4" fill="#00f2fe" />
+  </g>
+
+  <!-- Central Target / Vulnerability Radar Matrix -->
+  <g opacity="0.25">
+    <circle cx="256" cy="200" r="110" stroke="url(#cyanGrad)" stroke-width="2" stroke-dasharray="6 6" fill="none" />
+    <circle cx="256" cy="200" r="75" stroke="url(#neonPinkGrad)" stroke-width="1.5" fill="none" />
+    <line x1="256" y1="75" x2="256" y2="325" stroke="#4facfe" stroke-width="1.5" />
+    <line x1="131" y1="200" x2="381" y2="200" stroke="#4facfe" stroke-width="1.5" />
+  </g>
+
+  <!-- Masterpiece Core: The "NIGHTX" Cyber Glyph -->
+  <g filter="url(#cyberGlow)">
+    <!-- Shield / Hexagon Base Silhouette -->
+    <path d="M 256 100 L 352 155 L 352 245 L 256 300 L 160 245 L 160 155 Z" fill="#0b1329" stroke="url(#cyanGrad)" stroke-width="3" stroke-opacity="0.8" />
+
+    <!-- Sleek Futuristic X Symbol -->
+    <!-- Top-Left to Bottom-Right Slash -->
+    <path d="M 190 145 L 322 255" stroke="url(#cyanGrad)" stroke-width="22" stroke-linecap="round" />
+    <!-- Bottom-Left to Top-Right Slash (Overlapping dynamic break) -->
+    <path d="M 190 255 L 242 212" stroke="url(#matrixGrad)" stroke-width="22" stroke-linecap="round" />
+    <path d="M 270 188 L 322 145" stroke="url(#matrixGrad)" stroke-width="22" stroke-linecap="round" />
+
+    <!-- Security Breach Nodes (Glowing Core Points) -->
+    <circle cx="256" cy="200" r="12" fill="#ffffff" />
+    <circle cx="190" cy="145" r="7" fill="#00f2fe" />
+    <circle cx="322" cy="255" r="7" fill="#ff0844" />
+    <circle cx="322" cy="145" r="7" fill="#00ff87" />
+    <circle cx="190" cy="255" r="7" fill="#4facfe" />
+  </g>
+
+  <!-- Typography Section -->
+  <!-- App Name: nightx -->
+  <text x="256" y="380" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="52" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3" filter="url(#dropShadow)">
+    night<tspan fill="url(#cyanGrad)">X</tspan>
+  </text>
+
+  <!-- Subtitle Framework Label -->
+  <text x="256" y="415" font-family="'Courier New', Courier, monospace" font-size="14" font-weight="bold" fill="#64748b" text-anchor="middle" letter-spacing="6">
+    WEB PENTEST FRAMEWORK
+  </text>
+
+  <!-- Decorative Terminal Status Dot -->
+  <circle cx="210" cy="445" r="4" fill="#00ff87" />
+  <text x="222" y="449" font-family="'Courier New', Courier, monospace" font-size="11" fill="#475569" letter-spacing="1">SECURE_ACTIVE</text>
+</svg>
