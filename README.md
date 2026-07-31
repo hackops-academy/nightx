@@ -19,7 +19,7 @@
 ---
 
 <p align="center">
-  <img src="assets/nightx-logo.png" alt="Nightx, made by HackOps Academy" width="50%">
+  <img src="assets/nightx-logo.png" alt="Nightx, made by HackOps Academy" width="240">
 </p>
 
 ## ⚙️ Installation
